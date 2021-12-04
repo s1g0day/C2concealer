@@ -141,7 +141,7 @@ Successfully installed C2concealer
 C2concealer --variant 1 --hostname aaa.test.com
 ```
 
-![](\README\image-20211203165632498.png)
+![](https://raw.githubusercontent.com/s1g0day/C2concealer/master/readme/image-20211203165632498.png)
 
 - 因为我们使用的CDN给的证书，所以选择3
 - 在(absolute path)中输入CDN_https.store绝对路径
@@ -150,7 +150,7 @@ C2concealer --variant 1 --hostname aaa.test.com
 - 成功后会生成一个随机名的profile，将这个profile，上传到cobaltstrike目录下。
 - 最后进行验证这个profile能否使用
 
-![](\README\image-20211203173013151.png)
+![](https://raw.githubusercontent.com/s1g0day/C2concealer/master/readme/image-20211203173013151.png)
 
 首次验证报了两行错误
 ```
@@ -158,4 +158,4 @@ C2concealer --variant 1 --hostname aaa.test.com
 第149行是编译时间：compile_time，不请求有啥用直接删除
 ```
 再次测试发现检查结果中没有**will use built-in SSL cert**，但在后续的测试过程中确定能够正常上线，说明这个配置文件是可以用的
-![](\README\image-20211203172142568.png)
+![](https://raw.githubusercontent.com/s1g0day/C2concealer/master/readme/image-20211203172142568.png)
