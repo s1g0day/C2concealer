@@ -91,3 +91,71 @@ Version 1.0
 - Public version of FortyNorth Security's internal tool.
 - Added support for CS 4.0 (specifically multiple HTTP variants)
 - Updated README.md
+
+
+
+# 使用案例
+
+使用方法：
+
+~~~
+安装命令：
+chmod u+x install.sh
+./install.sh
+使用命令:
+C2concealer --variant 1 --hostname aaa.test.com
+最后需要更改cs的配置文件中https-certificate的配置
+~~~
+
+centos环境默认不能直接使用，可以用kali，当然centos也是可以通过其他方法
+
+~~~
+// 看下install.sh内容，发现安装了两个程序
+[root@racknerd-22446c C2concealer]# cat install.sh
+if [ "$(id -u)" != "0" ]; then
+  echo '[Error]: You must run this setup script with root privileges.'
+  echo
+  exit 1
+fi
+apt-get -y install python3-pip
+apt-get -y install default-jre
+pip3 install -e .
+
+// 可以用yum替代,因为java环境是通过yum 安装的,所以这里不需要安装jre了
+[root@racknerd-22446c C2concealer]# yum install python3-pip
+......
+[root@racknerd-22446c C2concealer]# pip3 install -e .
+WARNING: Running pip install with root privileges is generally not a good idea. Try `pip3 install --user` instead.
+Obtaining file:///root/tools/C2concealer
+Installing collected packages: C2concealer
+  Running setup.py develop for C2concealer
+Successfully installed C2concealer
+~~~
+我这里使用的是kali
+
+第一步：先将服务器生成 CDN_https.store 下载复制到kali内
+第二步：kali用户切换的到root
+第三步：执行代码, 将aaa.test.com替换成CDN上线域名
+
+```
+C2concealer --variant 1 --hostname aaa.test.com
+```
+
+![](\README\image-20211203165632498.png)
+
+- 因为我们使用的CDN给的证书，所以选择3
+- 在(absolute path)中输入CDN_https.store绝对路径
+- 当出现 **Enter the keystore's password** 后,输入store的密码`CDN_HTTPS123`并回车确认
+(注: 密码不会显示，所以输错也不会知道)
+- 成功后会生成一个随机名的profile，将这个profile，上传到cobaltstrike目录下。
+- 最后进行验证这个profile能否使用
+
+![](\README\image-20211203173013151.png)
+
+首次验证报了两行错误
+```
+第13行是：dns_beacon，还没有用到DNS上线直接删除
+第149行是编译时间：compile_time，不请求有啥用直接删除
+```
+再次测试发现检查结果中没有**will use built-in SSL cert**，但在后续的测试过程中确定能够正常上线，说明这个配置文件是可以用的
+![](\README\image-20211203172142568.png)
